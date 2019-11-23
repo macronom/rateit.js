@@ -96,7 +96,7 @@
                     p2 = (p2 == null) ? itemdata('min') : Math.max(itemdata('min'), Math.min(itemdata('max'), p2));
                 }
                 if (itemdata('backingfld')) {
-                    //if we have a backing field, check which fields we should update. 
+                    //if we have a backing field, check which fields we should update.
                     //In case of input[type=range], although we did read its attributes even in browsers that don't support it (using fld.attr())
                     //we only update it in browser that support it (&& fld[0].min only works in supporting browsers), not only does it save us from checking if it is range input type, it also is unnecessary.
                     var fld = $(itemdata('backingfld'));
@@ -132,6 +132,7 @@
                 itemdata('starheight', itemdata('starheight') || options.starheight);
                 itemdata('value', Math.max(itemdata('min'), Math.min(itemdata('max'), (!isNaN(itemdata('value')) ? itemdata('value') : (!isNaN(options.value) ? options.value : options.min)))));
                 itemdata('ispreset', itemdata('ispreset') !== undefined ? itemdata('ispreset') : options.ispreset);
+                itemdata('minvalue', isNaN(itemdata('minvalue')) ? options.minvalue : itemdata('minvalue'));
                 //are we LTR or RTL?
 
                 if (itemdata('backingfld')) {
@@ -175,15 +176,15 @@
                         }
                     }
                     else {
-                        //if it is not a select box, we can get's it's value using the val function. 
+                        //if it is not a select box, we can get's it's value using the val function.
                         //If it is a selectbox, we always get a value (the first one of the list), even if it was not explicity set.
                         itemdata('value', fld.val());
                     }
 
-                   
+
                 }
 
-              
+
 
                 //Create the necessary tags. For ARIA purposes we need to give the items an ID. So we use an internal index to create unique ids
                 var element = item[0].nodeName == 'DIV' ? 'div' : 'span';
@@ -212,10 +213,10 @@
 
             var isfont = itemdata('mode') == 'font';
 
-            
 
 
-            //resize the height of all elements, 
+
+            //resize the height of all elements,
             if (!isfont) {
                 item.find('.rateit-selected, .rateit-hover').height(itemdata('starheight'));
             }
@@ -231,9 +232,9 @@
                 for(var i = 0; i< stars; i++){
                     txt += icon;
                 }
-                
+
                 range.find('> *').text(txt);
-                
+
 
                 itemdata('starwidth', range.width() / (itemdata('max') - itemdata('min')))
             }
@@ -272,7 +273,7 @@
                         return false;
                     }
 
-                    item.rateit('value', null);
+                    item.rateit('value', itemdata('minvalue') ? itemdata('minvalue') : null);
                     item.trigger('reset');
                 }).data('wired', true);
 
@@ -287,7 +288,11 @@
                 if (offsetx > range.width()) { offsetx = range.width(); }
                 if (offsetx < 0) { offsetx = 0; }
 
-                return score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
+                var score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
+                if (itemdata('minvalue')) {
+                    score = Math.max(itemdata('minvalue') / itemdata('step'), score);
+                }
+                return score;
             };
 
             //sets the hover element based on the score.
@@ -405,7 +410,7 @@
     };
 
     //some default values.
-    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, mode: 'bg', icon: '★', starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false };
+    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, mode: 'bg', icon: '★', starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false, minvalue: false };
 
     //invoke it on all .rateit elements. This could be removed if not wanted.
     $(function () { $('div.rateit, span.rateit').rateit(); });
