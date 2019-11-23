@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Test of rateit.js</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="../scripts/jquery.rateit.js"></script>
+	<script src="test.js"></script>
+	<link href="../scripts/rateit.css" rel="stylesheet" media="all" type="text/css"/>
+
+	<style>
+		fieldset {
+			padding: 20px;
+			border: 1px solid #aaa;
+		}
+	</style>
+</head>
+
+<body>
+	<fieldset>
+		<legend>&lt;div&gt; + mode:bg</legend>
+		<div class="rateit-test" data-rateit-mode="bg"></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>&lt;div&gt; + mode:font</legend>
+		<div class="rateit-test" data-rateit-mode="font"></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>&lt;span&gt; + mode:bg</legend>
+		<span class="rateit-test" data-rateit-mode="bg"></span>
+	</fieldset>
+
+	<fieldset>
+		<legend>&lt;span&gt; + mode:font</legend>
+		<span class="rateit-test" data-rateit-mode="font"></span>
+	</fieldset>
+
+	<fieldset>
+		<legend>result</legend>
+		<div id="rateresult">&nbsp;</div>
+	</fieldset>
+</body>
+
+</html>
